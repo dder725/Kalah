@@ -6,12 +6,14 @@ import kalah.Manager.Player;
 public class House {
     private static final int initialSeeds = 4;
     private final int houseNumber;
+    private final boolean isStore;
     private final Player owner;
     private int seeds;
 
-    public House(Player owner, int houseNumber) {
+    public House(Player owner, int houseNumber, boolean isStore) {
         this.owner = owner;
         this.houseNumber = houseNumber;
+        this.isStore = isStore;
         this.seeds = initialSeeds;
     }
 
@@ -38,5 +40,19 @@ public class House {
         return ( GameManager.NUMBER_OF_HOUSES + 1) - this.houseNumber;
     }
 
+    /**
+     * Query how many seeds are currently in the house
+     * @return The number of seeds in the house
+     */
+    public int getNumberOfSeeds(){
+        return this.seeds;
+    }
 
+    public boolean isStore(){
+        return isStore;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
 }

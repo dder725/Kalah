@@ -102,13 +102,13 @@ public class GameManager {
                 if (seedsToSow > 0) {
                     playerToUpdate.getHouse(i).sowSeeds(1);
                     seedsToSow--;
+                    currentHouse = playerToUpdate.getHouse(i); // Keep track of the house we are currently at
 
                     if (playerToUpdate.getHouse(i).isStore()) {
                         playerToUpdate.updateScore(1);
                     }
                 }
 
-                currentHouse = playerToUpdate.getHouse(i); // Keep track of the house we are currently at
             }
             if (seedsToSow != 0) {
                 playerToUpdate = switchPlayer(playerToUpdate); // Switch to the other player's houses

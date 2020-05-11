@@ -13,7 +13,7 @@ public class GameManager {
     public static final int NUMBER_OF_PLAYERS = 2;
     private static final String INPUT_PROMPT = "Player P%d's turn - Specify house number or 'q' to quit: ";
 
-    private static final List<Player> players = new ArrayList<Player>();
+    private final List<Player> players = new ArrayList<Player>();
     private KalahBoard board;
     private Player currentPlayer;
 
@@ -44,7 +44,7 @@ public class GameManager {
         return board;
     }
 
-    public static Player getPlayer(int playerIndex) {
+    public Player getPlayer(int playerIndex) {
         return players.get(playerIndex);
     }
 

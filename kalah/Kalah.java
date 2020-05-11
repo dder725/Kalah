@@ -18,17 +18,17 @@ public class Kalah {
 	public void play(IO io) {
 		GameManager gameManager = new GameManager();
 		BoardDisplay printer = new CLIBoardDisplay(gameManager.getBoard(), io);
-		printer.displayBoard();
+		printer.displayBoard(gameManager);
 
 		String playerInput = gameManager.getInput(io);
 
 		while(!playerInput.equals("q")){
 			gameManager.move(playerInput, io);
-			printer.displayBoard();
+			printer.displayBoard(gameManager);
 			playerInput = gameManager.getInput(io);
 		}
 
 		io.println("Game over");
-		printer.displayBoard();
+		printer.displayBoard(gameManager);
 	}
 }

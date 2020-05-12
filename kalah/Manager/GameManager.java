@@ -12,8 +12,9 @@ public class GameManager {
     public static final int NUMBER_OF_HOUSES = 6;
     public static final int NUMBER_OF_PLAYERS = 2;
     private static final String INPUT_PROMPT = "Player P%d's turn - Specify house number or 'q' to quit: ";
-    private static final String SCORE = "\tplayer %d:%2d";
+    private static final String SCORE = "\tplayer %d:%d";
     private static final String RESULTS = "Player %d wins!";
+    private static final String TIE = "A tie!";
 
 
     private final List<Player> players = new ArrayList<Player>();
@@ -59,7 +60,7 @@ public class GameManager {
      */
     public String getInput(IO io) {
         // If the current player has no more seeds, finish the game
-        if(!playerHasSeeds(currentPlayer)){
+        if (!playerHasSeeds(currentPlayer)) {
             return "f";
         }
         String playerInput = io.readFromKeyboard(String.format(INPUT_PROMPT, currentPlayer.getPlayerNumber())).trim();
@@ -184,10 +185,11 @@ public class GameManager {
 
     /**
      * Finalize and display the score
+     *
      * @param io
      */
     public void printScore(IO io) {
-        for(Player player: players){
+        for (Player player : players) {
             player.collectRemainingSeeds();
             io.println(String.format(SCORE, player.getPlayerNumber(), player.getScore()));
         }
@@ -199,6 +201,8 @@ public class GameManager {
     public void printResults(IO io) {
         if (players.get(0).getScore() > players.get(1).getScore()) {
             io.println(String.format(RESULTS, 1));
+        } else if (players.get(0).getScore() == players.get(1).getScore()) {
+            io.println(TIE);
         } else {
             io.println(String.format(RESULTS, 2));
         }

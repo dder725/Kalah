@@ -14,7 +14,11 @@ public class House {
         this.owner = owner;
         this.houseNumber = houseNumber;
         this.isStore = isStore;
-        this.seeds = initialSeeds;
+        if(this.isStore){
+            this.seeds = 0;
+        } else {
+            this.seeds = initialSeeds;
+        }
     }
 
     /*
@@ -37,7 +41,7 @@ public class House {
     Get the number of the opposite house
      */
     public int getOppositeHouseNumber(){
-        return ( GameManager.NUMBER_OF_HOUSES + 1) - this.houseNumber;
+        return ( GameManager.NUMBER_OF_HOUSES) - this.houseNumber;
     }
 
     /**

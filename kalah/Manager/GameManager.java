@@ -13,6 +13,7 @@ import java.util.Map;
 public class GameManager {
     public static final int NUMBER_OF_HOUSES = 6;
     public static final int NUMBER_OF_PLAYERS = 2;
+
     private static final String INPUT_PROMPT = "Player P%d's turn - Specify house number or 'q' to quit: ";
     private static final String SCORE = "\tplayer %d:%d";
     private static final String RESULTS = "Player %d wins!";
@@ -73,14 +74,13 @@ public class GameManager {
         if (isValidInput(playerInput)) {
             return playerInput;
         } else {
-            io.println("Invalid input");
             return "i"; // Return 'i' character to notify of an invalid input
         }
     }
 
-    private boolean isValidInput(String input) throws NumberFormatException {
-        int inputNum = Integer.valueOf(input);
+    private boolean isValidInput(String input) {
         try {
+            int inputNum = Integer.valueOf(input);
             return inputNum <= NUMBER_OF_HOUSES && inputNum > 0;
         } catch (NumberFormatException e) {
             return false;
@@ -92,7 +92,6 @@ public class GameManager {
      *
      * @param input - the move to perform
      */
-
     public void move(String input, IO io) {
         int startingHouse = Integer.valueOf(input);
         int seedsToSow = currentPlayer.getHouse(startingHouse - 1).collectSeeds();
@@ -154,7 +153,7 @@ public class GameManager {
     }
 
     /**
-     * Capture seed from the opponents house and move them to the current player's store
+     * Capture seeds from the opponents house and move them to the current player's store
      *
      * @param currentPlayer
      * @param opponent
@@ -162,7 +161,7 @@ public class GameManager {
      */
     private void captureHouse(Player currentPlayer, Player opponent, Pit currentHouse) {
         int oppositeHouseNumber = 0;
-        if(currentHouse instanceof House){
+        if (currentHouse instanceof House) {
             oppositeHouseNumber = ((House) currentHouse).getOppositeHouseNumber();
         }
         int capturedSeeds = opponent.getHouse(oppositeHouseNumber).collectSeeds() + currentHouse.collectSeeds();
@@ -170,16 +169,22 @@ public class GameManager {
         currentPlayer.updateScore(capturedSeeds);
     }
 
+    /**
+     * Check the number of seeds in the opponent's opposite house
+     * @param opponent
+     * @param currentHouse
+     * @return
+     */
     private int countSeedsInOppositeHouse(Player opponent, Pit currentHouse) {
         int oppositeHouseNumber = 0;
-        if(currentHouse instanceof House){
+        if (currentHouse instanceof House) {
             oppositeHouseNumber = ((House) currentHouse).getOppositeHouseNumber();
         }
         return opponent.getHouse(oppositeHouseNumber).getNumberOfSeeds();
     }
 
     /**
-     * Check if both players still have seeds
+     * Check if a player still have seeds
      *
      * @return
      */
@@ -203,7 +208,7 @@ public class GameManager {
     }
 
     /**
-     * Print results
+     * Print the outcome of the game
      */
     public void printResults(IO io) {
         if (players.get(0).getScore() > players.get(1).getScore()) {

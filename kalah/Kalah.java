@@ -24,14 +24,18 @@ public class Kalah {
         String playerInput = gameManager.getInput(io);
 
         while (!playerInput.equals("q") && !playerInput.equals("f")) {
-            gameManager.move(playerInput, io);
-            printer.displayBoard(gameManager);
+            if (playerInput.equals("i")) {
+                io.println("Invalid input, try again");
+            } else {
+                gameManager.move(playerInput, io);
+                printer.displayBoard(gameManager);
+            }
             playerInput = gameManager.getInput(io);
         }
 
         io.println("Game over");
         printer.displayBoard(gameManager);
-        if(playerInput.equals("f")) {
+        if (playerInput.equals("f")) {
             gameManager.printScore(io);
             gameManager.printResults(io);
         }

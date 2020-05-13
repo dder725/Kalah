@@ -12,7 +12,6 @@ public class House extends Pit {
         this.houseNumber = houseNumber;
     }
 
-
     /*
     Collect all seeds from this house
      */

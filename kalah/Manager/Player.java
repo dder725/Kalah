@@ -48,7 +48,7 @@ public class Player {
 
     /**
      * Check if this player has any seeds left to continue playing
-     * @return
+     *
      */
     public boolean hasSeedsLeft(){
         for(Pit house: playerHouses){

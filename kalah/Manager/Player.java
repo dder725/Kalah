@@ -1,6 +1,7 @@
 package kalah.Manager;
 
-import kalah.Board.House;
+import kalah.Board.Pit;
+import kalah.Board.Store;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,7 +10,7 @@ import java.util.List;
 public class Player {
     private final int playerNumber;
     private int score;
-    private final List<House> playerHouses = new ArrayList<House>();
+    private final List<Pit> playerHouses = new ArrayList<Pit>();
 
     public Player(int number) {
         this.playerNumber = number;
@@ -29,15 +30,15 @@ public class Player {
      *
      * @param houseToAdd
      */
-    public void addHouse(House houseToAdd) {
+    public void addHouse(Pit houseToAdd) {
         playerHouses.add(houseToAdd);
     }
 
-    public House getHouse(int houseNumber) {
+    public Pit getHouse(int houseNumber) {
         return playerHouses.get(houseNumber);
     }
 
-    public House getStore() {
+    public Pit getStore() {
         return playerHouses.get(GameManager.NUMBER_OF_HOUSES);
     }
 
@@ -50,8 +51,8 @@ public class Player {
      * @return
      */
     public boolean hasSeedsLeft(){
-        for(House house: playerHouses){
-            if(house.getNumberOfSeeds() > 0 && !house.isStore()){
+        for(Pit house: playerHouses){
+            if(house.getNumberOfSeeds() > 0 && !(house instanceof Store)){
                 return true;
             }
         }
@@ -62,7 +63,7 @@ public class Player {
      * Collect seeds from the remaining houses at the end of the game
      */
     public void collectRemainingSeeds(){
-        for(House house: playerHouses){
+        for(Pit house: playerHouses){
             int remainingSeeds = house.collectSeeds();
             getStore().sowSeeds(remainingSeeds);
             this.score = getStore().getNumberOfSeeds();

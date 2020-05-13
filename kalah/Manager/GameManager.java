@@ -2,7 +2,9 @@ package kalah.Manager;
 
 import com.qualitascorpus.testsupport.IO;
 import kalah.Board.House;
+import kalah.Board.Pit;
 import kalah.Board.KalahBoard;
+import kalah.Board.Store;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,9 @@ public class GameManager {
     private static final String RESULTS = "Player %d wins!";
     private static final String TIE = "A tie!";
 
-
     private final List<Player> players = new ArrayList<Player>();
     private KalahBoard board;
+
     private Player currentPlayer;
     private Player opponent;
 
@@ -29,7 +31,7 @@ public class GameManager {
     /**
      * Set up the game for playing
      */
-    public void startGame() {
+    private void startGame() {
         generatePlayers();
         board = new KalahBoard(players);
     }
@@ -37,7 +39,7 @@ public class GameManager {
     /**
      * Generate players
      */
-    public void generatePlayers() {
+    private void generatePlayers() {
         for (int i = 1; i <= NUMBER_OF_PLAYERS; i++) {
             players.add(new Player(i));
             currentPlayer = players.get(0);
@@ -76,10 +78,6 @@ public class GameManager {
         }
     }
 
-    public Player getCurrentPlayer() {
-        return this.currentPlayer;
-    }
-
     private boolean isValidInput(String input) throws NumberFormatException {
         int inputNum = Integer.valueOf(input);
         try {
@@ -94,11 +92,12 @@ public class GameManager {
      *
      * @param input - the move to perform
      */
+
     public void move(String input, IO io) {
         int startingHouse = Integer.valueOf(input);
         int seedsToSow = currentPlayer.getHouse(startingHouse - 1).collectSeeds();
         Player opponent = switchPlayer(currentPlayer);
-        House currentHouse = currentPlayer.getHouse(startingHouse);
+        Pit currentHouse = currentPlayer.getHouse(startingHouse);
         // If the chosen house is empty the current player gets another go
         if (seedsToSow == 0) {
             io.println("House is empty. Move again.");
@@ -111,10 +110,10 @@ public class GameManager {
             for (int i = startingHouse; i <= NUMBER_OF_HOUSES; i++) {
                 if (seedsToSow > 0) {
                     currentHouse = playerToUpdate.getHouse(i); // Keep track of the house we are currently at
-                    if (!(currentHouse.isStore() && currentHouse.getOwner().equals(opponent))) { // Do not sow seeds in the opponent's store
+                    if (!((currentHouse instanceof Store) && currentHouse.getOwner().equals(opponent))) { // Do not sow seeds in the opponent's store
                         currentHouse.sowSeeds(1);
                         seedsToSow--;
-                        if (playerToUpdate.getHouse(i).isStore()) {
+                        if (playerToUpdate.getHouse(i) instanceof Store) {
                             playerToUpdate.updateScore(1);
                         }
                     }
@@ -127,7 +126,7 @@ public class GameManager {
         }
 
         // Check if can capture the opponents house
-        if (!currentHouse.isStore() &&
+        if (!(currentHouse instanceof Store) &&
                 currentHouse.getOwner().equals(currentPlayer) &&
                 currentHouse.getNumberOfSeeds() == 1
                 && countSeedsInOppositeHouse(opponent, currentHouse) > 0) {
@@ -135,7 +134,7 @@ public class GameManager {
         }
 
         // Give turn to the next player
-        if (!(currentHouse.isStore() && currentHouse.getOwner().equals(currentPlayer))) {
+        if (!(currentHouse instanceof Store && currentHouse.getOwner().equals(currentPlayer))) {
             this.currentPlayer = switchPlayer(this.currentPlayer);
         }
     }
@@ -161,14 +160,22 @@ public class GameManager {
      * @param opponent
      * @param currentHouse
      */
-    private void captureHouse(Player currentPlayer, Player opponent, House currentHouse) {
-        int capturedSeeds = opponent.getHouse(currentHouse.getOppositeHouseNumber()).collectSeeds() + currentHouse.collectSeeds();
+    private void captureHouse(Player currentPlayer, Player opponent, Pit currentHouse) {
+        int oppositeHouseNumber = 0;
+        if(currentHouse instanceof House){
+            oppositeHouseNumber = ((House) currentHouse).getOppositeHouseNumber();
+        }
+        int capturedSeeds = opponent.getHouse(oppositeHouseNumber).collectSeeds() + currentHouse.collectSeeds();
         currentPlayer.getStore().sowSeeds(capturedSeeds);
         currentPlayer.updateScore(capturedSeeds);
     }
 
-    private int countSeedsInOppositeHouse(Player opponent, House currentHouse) {
-        return opponent.getHouse(currentHouse.getOppositeHouseNumber()).getNumberOfSeeds();
+    private int countSeedsInOppositeHouse(Player opponent, Pit currentHouse) {
+        int oppositeHouseNumber = 0;
+        if(currentHouse instanceof House){
+            oppositeHouseNumber = ((House) currentHouse).getOppositeHouseNumber();
+        }
+        return opponent.getHouse(oppositeHouseNumber).getNumberOfSeeds();
     }
 
     /**

@@ -5,6 +5,7 @@ import com.qualitascorpus.testsupport.MockIO;
 import kalah.Board.KalahBoard;
 import kalah.Display.BoardDisplay;
 import kalah.Display.CLIBoardDisplay;
+import kalah.Display.VerticalBoardDisplay;
 import kalah.Manager.GameManager;
 
 /**
@@ -18,7 +19,7 @@ public class Kalah {
 
     public void play(IO io) {
         GameManager gameManager = new GameManager();
-        BoardDisplay printer = new CLIBoardDisplay(gameManager.getBoard(), io);
+        BoardDisplay printer = new VerticalBoardDisplay(gameManager.getBoard(), io);
         printer.displayBoard(gameManager);
 
         String playerInput = gameManager.getInput(io);

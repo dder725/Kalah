@@ -2,7 +2,7 @@
   <library name="junit-3.8.2">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/kalah_resources/junit-3.8.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/kalah_resources/kalah.jar!/" />
+      <root url="jar://$PROJECT_DIR$/kalah_resources/kalah-bmf.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

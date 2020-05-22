@@ -1,8 +1,8 @@
 <component name="libraryTable">
-  <library name="junit-3.8.21">
+  <library name="kalah_resources">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/junit-3.8.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/kalah.jar!/" />
+      <root url="jar://$PROJECT_DIR$/kalah-bmf.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

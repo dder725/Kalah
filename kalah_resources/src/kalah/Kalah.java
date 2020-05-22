@@ -19,7 +19,7 @@ public class Kalah {
 
     public void play(IO io) {
         GameManager gameManager = new GameManager();
-        BoardDisplay printer = new VerticalBoardDisplay(gameManager.getBoard(), io);
+        BoardDisplay printer = new CLIBoardDisplay(gameManager.getBoard(), io);
         printer.displayBoard(gameManager);
 
         String playerInput = gameManager.getInput(io);

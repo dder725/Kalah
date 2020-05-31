@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Player {
+public class
+
+Player {
     private final int playerNumber;
     private int score;
+    private boolean isRobot = false;
     private final List<Pit> playerHouses = new ArrayList<Pit>();
 
     public Player(int number) {
@@ -68,5 +71,16 @@ public class Player {
             getStore().sowSeeds(remainingSeeds);
             this.score = getStore().getNumberOfSeeds();
         }
+    }
+
+    /**
+     * Change the robot flag of this player (signifies a computer-driven player)
+     */
+    public void toggleRobotStatus(){
+        this.isRobot = !this.isRobot;
+    }
+
+    public boolean isRobot(){
+        return isRobot;
     }
 }

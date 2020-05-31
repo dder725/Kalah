@@ -20,6 +20,7 @@ public class GameManager {
     private static final String TIE = "A tie!";
 
     private final List<Player> players = new ArrayList<Player>();
+    private Robot ai;
     private KalahBoard board;
 
     private Player currentPlayer;
@@ -33,7 +34,7 @@ public class GameManager {
      * Set up the game for playing
      */
     private void startGame() {
-        generatePlayers();
+        generatePlayersAI();
         board = new KalahBoard(players);
     }
 
@@ -45,6 +46,22 @@ public class GameManager {
             players.add(new Player(i));
             currentPlayer = players.get(0);
         }
+    }
+
+    /**
+     * Generate players for a game with AI
+     * @return
+     */
+    private void generatePlayersAI(){
+        // Generate a human player
+        Player player = new Player(1);
+        players.add(player);
+        currentPlayer = players.get(0);
+
+        // Generate an AI player
+        Player robot = new Player(2);
+        players.add(robot);
+        ai = new Robot(robot, player);
     }
 
     public KalahBoard getBoard() {
@@ -66,6 +83,10 @@ public class GameManager {
         if (!playerHasSeeds(currentPlayer)) {
             return "f";
         }
+
+        if(currentPlayer.isRobot()){
+            return "r";
+        }
         String playerInput = io.readFromKeyboard(String.format(INPUT_PROMPT, currentPlayer.getPlayerNumber())).trim();
 
         if (playerInput.equals("q")) {
@@ -76,6 +97,7 @@ public class GameManager {
         } else {
             return "i"; // Return 'i' character to notify of an invalid input
         }
+
     }
 
     private boolean isValidInput(String input) {
@@ -93,7 +115,11 @@ public class GameManager {
      * @param input - the move to perform
      */
     public void move(String input, IO io) {
-        int startingHouse = Integer.valueOf(input);
+        int startingHouse;
+        if(input.equals("r")){
+            startingHouse = ai.robotResponse(io);
+        } else {
+        startingHouse = Integer.valueOf(input);}
         int seedsToSow = currentPlayer.getHouse(startingHouse - 1).collectSeeds();
         Player opponent = switchPlayer(currentPlayer);
         Pit currentHouse = currentPlayer.getHouse(startingHouse);
@@ -136,6 +162,10 @@ public class GameManager {
         if (!(currentHouse instanceof Store && currentHouse.getOwner().equals(currentPlayer))) {
             this.currentPlayer = switchPlayer(this.currentPlayer);
         }
+    }
+
+    public int aiMove(IO io){
+        return ai.robotResponse(io);
     }
 
     /**
